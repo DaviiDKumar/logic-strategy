@@ -1,133 +1,85 @@
 import { useState, useEffect } from 'react';
-import { 
-  Send, 
-  ShieldCheck, 
-  Zap, 
-  ChevronRight, 
-  Activity,
-  Globe
-} from 'lucide-react';
+import { Send, Shield, Zap, Activity, Globe } from 'lucide-react';
 
-function App() {
-  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
-  const [liveUsers, setLiveUsers] = useState(1402);
+export default function App() {
+  const [active, setActive] = useState(1402);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      const now = new Date();
-      const target = new Date();
-      target.setHours(23, 59, 59);
-      const diff = target - now;
-      
-      setTimeLeft({
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((diff / 1000 / 60) % 60),
-        seconds: Math.floor((diff / 1000) % 60)
-      });
-      setLiveUsers(prev => prev + (Math.random() > 0.5 ? 1 : -1));
-    }, 1000);
+      setActive(prev => prev + (Math.random() > 0.5 ? 1 : -1));
+    }, 2000);
     return () => clearInterval(timer);
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] text-slate-900 flex flex-col items-center p-4 font-sans">
+    <div className="min-h-screen bg-[#0f172a] text-white flex flex-col items-center justify-center p-6 font-sans">
       
-      {/* Live Badge - Safe */}
-      <div className="mb-4 flex items-center gap-2 bg-white px-4 py-1.5 rounded-full shadow-sm border border-gray-100">
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-        </span>
-        <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">
-          {liveUsers} Members Active
+      {/* Dynamic Status Badge */}
+      <div className="mb-6 flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md">
+        <span className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_#22d3ee]"></span>
+        <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-cyan-400/80">
+          {active} Online Now
         </span>
       </div>
 
-      <div className="w-full max-w-md bg-white rounded-[3rem] overflow-hidden shadow-xl border border-white relative">
+      <div className="w-full max-w-sm bg-gradient-to-b from-slate-900 to-black rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl relative">
         
-        {/* TOP SECTION: Professional Visual */}
-        <div className="relative h-64 overflow-hidden bg-slate-100">
+        {/* Header Visual */}
+        <div className="relative h-56 bg-slate-800">
           <img 
             src="/jpg1.jpeg" 
-            className="w-full h-full object-cover opacity-90"
-            alt="Interface"
+            className="w-full h-full object-cover opacity-60"
+            alt="Data Analysis"
             onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1000" }}
           />
-          <div className="absolute top-6 left-6">
-            <div className="bg-black/80 backdrop-blur-md text-white px-3 py-1 rounded-lg text-[10px] font-black tracking-widest uppercase">
-              UX System v4.0 Active
-            </div>
-          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent"></div>
         </div>
 
-        {/* CONTENT AREA */}
-        <div className="px-8 pb-10 -mt-12 relative z-10">
+        {/* Content */}
+        <div className="px-8 pb-10 -mt-20 relative z-10">
           
-          <div className="text-center space-y-2 mb-8">
-             <h2 className="text-blue-600 font-black text-xs uppercase tracking-[0.3em]">Elite Tech Framework</h2>
-             <h1 className="text-4xl font-[1000] leading-[0.95] tracking-tighter italic uppercase text-black">
-                Visual <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500">Logic</span> <br/>
-                Strategy
-             </h1>
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-[900] tracking-tighter italic uppercase leading-none">
+             <span className="text-cyan-400"></span><br/>
+              
+            </h1>
           </div>
 
-          {/* Safe Prediction Box (Removed Money Symbols) */}
-          <div className="bg-slate-900 rounded-3xl p-6 mb-8 text-center border-b-4 border-blue-800 shadow-xl">
-            <div className="flex justify-between items-center mb-4 opacity-50">
-              <Activity className="w-4 h-4 text-blue-400" />
-              <span className="text-[8px] font-bold text-white uppercase tracking-widest">Processing Data</span>
+          {/* Stats Card */}
+          <div className="bg-white/5 border mt-20 border-white/10 rounded-3xl p-6 mb-8 text-center backdrop-blur-xl">
+            <div className="flex justify-between items-center mb-4 opacity-40">
+              <Activity size={14} className="text-cyan-400" />
+              <span className="text-[8px] font-bold uppercase tracking-widest">v4.0 Live</span>
             </div>
-            <p className="text-gray-400 text-xs font-bold uppercase mb-1">Daily Success Rate</p>
-            <h3 className="text-3xl font-black text-white italic">92% — 98%</h3>
-            <div className="mt-4 h-1 w-full bg-white/10 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 w-[94%]"></div>
-            </div>
-          </div>
-
-          {/* Benefits Grid - Neutral Terms */}
-          <div className="grid grid-cols-2 gap-3 mb-8">
-            <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 flex flex-col items-center">
-              <Zap className="w-6 h-6 text-blue-500 mb-1" />
-              <span className="text-[9px] font-black uppercase text-gray-400">Response</span>
-              <span className="text-sm font-black italic">Ultra-Fast</span>
-            </div>
-            <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 flex flex-col items-center">
-              <ShieldCheck className="w-6 h-6 text-green-500 mb-1" />
-              <span className="text-[9px] font-black uppercase text-gray-400">Security</span>
-              <span className="text-sm font-black italic">Secure API</span>
+            <p className="text-slate-400 text-[10px] font-bold uppercase mb-2 tracking-widest">Accuracy Rate</p>
+            <div className="text-4xl font-black text-white italic tracking-tighter">94% — 98%</div>
+            <div className="mt-5 h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+              <div className="h-full bg-cyan-400 w-[96%] shadow-[0_0_15px_#22d3ee]"></div>
             </div>
           </div>
 
-          {/* MAIN CTA - No "Hack" word */}
+          {/* Main Button */}
           <button 
             onClick={() => window.open('https://telegram.me/+uEWhmljkjB1jYWI1', '_blank')}
-            className="group w-full bg-[#2563eb] hover:bg-black text-white py-6 rounded-[2rem] flex items-center justify-center gap-4 transition-all duration-500 shadow-2xl"
+            className="group w-full bg-cyan-500 hover:bg-white text-black py-5 rounded-2xl flex items-center justify-center gap-3 transition-all duration-300 font-black uppercase italic tracking-tighter shadow-[0_10px_20px_-5px_rgba(34,211,238,0.4)]"
           >
-            <Send className="w-6 h-6 group-hover:translate-x-1" />
-            <span className="text-xl font-black uppercase tracking-tighter italic">Join Logic Group</span>
-            <ChevronRight className="w-5 h-5 opacity-50" />
+            <Send size={20} className="group-hover:translate-x-1 transition-transform" />
+            <span className="text-lg">Join Group</span>
           </button>
 
-          {/* Footer with Compliance Links (MANDATORY for Meta) */}
-          <div className="mt-8 flex flex-col items-center gap-4">
-            <div className="flex gap-4 text-[8px] font-bold text-gray-400 uppercase tracking-widest">
-              <a href="#" className="hover:text-blue-600">Privacy Policy</a>
-              <span>•</span>
-              <a href="#" className="hover:text-blue-600">Terms of Service</a>
-              <span>•</span>
-              <a href="#" className="hover:text-blue-600">Contact Support</a>
+          {/* Minimal Footer */}
+          <div className="mt-10 flex flex-col items-center gap-6">
+            <div className="flex gap-6 text-[9px] font-bold text-slate-500 uppercase tracking-widest">
+              <a href="#" className="hover:text-cyan-400 transition-colors">Privacy</a>
+              <a href="#" className="hover:text-cyan-400 transition-colors">Terms</a>
+              <a href="#" className="hover:text-cyan-400 transition-colors">Support</a>
             </div>
+            <p className="text-[8px] text-slate-600 font-bold uppercase tracking-[0.3em]">
+              Powered by <span className="text-slate-400">Growthforge</span>
+            </p>
           </div>
-        </div>
-
-        <div className="bg-gray-50 py-4 text-center">
-          <p className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">
-            Developed by <span className="text-blue-600 underline">Growthforge</span>
-          </p>
         </div>
       </div>
     </div>
   );
 }
-
-export default App;
